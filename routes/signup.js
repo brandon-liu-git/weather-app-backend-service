@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-var User = require("../models/user");
+const User = require("../models/user");
 
 //POST route for updating data
-router.post("/signup", function(req, res, next) {
+exports.signup = function(req, res, next) {
   // confirm that user typed same password twice
   if (req.body.password !== req.body.passwordConf) {
-    var err = new Error("Passwords do not match.");
+    let err = new Error("Passwords do not match.");
     err.status = 400;
     res.send("passwords dont match");
     return next(err);
@@ -18,7 +18,7 @@ router.post("/signup", function(req, res, next) {
     req.body.password &&
     req.body.passwordConf
   ) {
-    var userData = {
+    let userData = {
       email: req.body.email,
       username: req.body.username,
       password: req.body.password
@@ -29,17 +29,16 @@ router.post("/signup", function(req, res, next) {
         return next(error);
       } else {
         res.json({
-          status: "ok",
+          status: 200,
+          success: true,
           message: "Success"
         });
         return;
       }
     });
   } else {
-    var err = new Error("All fields required.");
+    let err = new Error("All fields required.");
     err.status = 400;
     return next(err);
   }
-});
-
-module.exports = router;
+}

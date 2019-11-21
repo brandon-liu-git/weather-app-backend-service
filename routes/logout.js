@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // GET for logout logout
-router.get("/logout", function(req, res, next) {
+exports.logout = function(req, res, next) {
   if (req.session) {
     // delete session object
     req.session.destroy(function(err) {
@@ -13,4 +13,4 @@ router.get("/logout", function(req, res, next) {
       }
     });
   }
-});
+}

@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const constants = require("../utils/constants");
 
-router.get("/check_logged_in", function(req, res, next) {
-  let header = req.query || "";
-  if (req.query.type === "Bearer") {
+exports.check_logged_in = function(req, res, next) {
+  let header = req.body || "";
+  if (req.body.type === "Bearer") {    
     let payload = jwt.verify(req.query.token, constants.signature);
     User.findOne({ _id: payload.userId }).exec(function(error, user) {
       if (error) {
@@ -14,14 +14,14 @@ router.get("/check_logged_in", function(req, res, next) {
       } else {
         if (user === null) {
           res.json({
-            code: 400,
-            status: "failed",
+            status: 400,
+            success: false,
             message: "Logged Out"
           });
         } else {
           res.json({
-            code: 200,
-            status: "success",
+            status: 200,
+            success: true,
             currentAuthority: "admin",
             message: "Logged In"
           });
@@ -30,5 +30,4 @@ router.get("/check_logged_in", function(req, res, next) {
       return;
     });
   }
-});
-module.exports = router;
+}
